@@ -9,5 +9,5 @@ class Params():
         self.sample_time = 0.1
         self.N = 21
         self.num_states = 3
-        self.num_inputs = 4
+        self.num_inputs = 3
         self.Tf = 5.0

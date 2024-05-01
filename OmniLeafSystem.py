@@ -18,7 +18,7 @@ def OmniLeafSystem_(T):
             self.DeclareContinuousState(3)  # [x, y, theta]
 
             # Input
-            self.DeclareVectorInputPort("wheel", 4)  # [v1, v2, v3, v4]
+            self.DeclareVectorInputPort("wheel", 3)  # [v1, v2, v3]
 
             # Output
             self.DeclareVectorOutputPort(
@@ -31,12 +31,11 @@ def OmniLeafSystem_(T):
             v1 = self.EvalVectorInput(context, 0).GetAtIndex(0)
             v2 = self.EvalVectorInput(context, 0).GetAtIndex(1)
             v3 = self.EvalVectorInput(context, 0).GetAtIndex(2)
-            v4 = self.EvalVectorInput(context, 0).GetAtIndex(3)
             theta = context.get_continuous_state_vector().GetAtIndex(2)
 
-            v_heading = (v4 + v2) / 2
-            v_normal = (v1 - v3) / 2
-            omega = (v1 + v2 + v3 + v4) / (4 * self._params.d)
+            v_heading = np.sqrt(3) * (v3 - v1) / 3
+            v_normal = (v3 + v1) / 3 - (2/3) * v2
+            omega = (1 / (3 * self._params.d)) * (v1 + v2 + v3)
 
             x_dot = v_heading * np.cos(theta) + v_normal * np.sin(theta)
             y_dot = v_heading * np.sin(theta) - v_normal * np.cos(theta)

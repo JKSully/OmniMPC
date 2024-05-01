@@ -68,7 +68,8 @@ class LinearModelPredictiveController(LeafSystem):
 
         prog.AddBoundingBoxConstraint(
             goal_state, goal_state, dircol.final_state())
-
+        
+        # Torque constraints
         force_limit = self._params.wheel_speed_limit
         speed_limit = np.zeros(self._params.num_inputs) + force_limit
         dircol.AddConstraintToAllKnotPoints(BoundingBoxConstraint(
@@ -100,7 +101,7 @@ class LinearModelPredictiveController(LeafSystem):
         error = dircol.state() - goal_state
         u = dircol.input()
         Q = np.diag([1., 1., 1.])
-        R = np.diag([1., 1., 1., 1.])
+        R = np.diag([1., 1., 1.])
         dircol.AddRunningCost(error.T @ Q @ error + u.T @ R @ u)
 
         # Note: Gurobi would be the best solver for this problem, but it is not available in the current environment
